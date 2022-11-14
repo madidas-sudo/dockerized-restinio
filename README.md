@@ -7,6 +7,12 @@ an embedded and lightweight HTTP/Websocket server written in C++14 inside a
 [multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/) 
 [Docker](https://www.docker.com/) container with separated build and runtime stages.*
 
+## To build and run the container
+
+```bash
+make run
+```
+
 ## Build dockerized-restinio/build 
 ```
 docker build --target build -t dockerized-restinio/build . 
