@@ -10,24 +10,23 @@
 FROM alpine:latest as build
 LABEL description="Build container for dockerized-restinio"
 RUN apk update && apk add --no-cache \
-    autoconf build-base binutils cmake curl file gcc g++ git http-parser libgcc libtool linux-headers make musl-dev ninja tar unzip wget
+    autoconf build-base binutils cmake fmt curl zip file gcc g++ git http-parser libgcc libtool linux-headers make musl-dev pkgconfig ninja tar unzip wget
 
 RUN cd /tmp \
-    && git clone https://github.com/Microsoft/vcpkg.git -n \ 
+    && git clone https://github.com/Microsoft/vcpkg.git \ 
     && cd vcpkg \
-    && git checkout d82f37b4bfc1422d4601fbb63cbd553c925f7014 \
-    && ./bootstrap-vcpkg.sh -useSystemBinaries
+    && ./bootstrap-vcpkg.sh
 
-COPY x64-linux-musl.cmake /tmp/vcpkg/triplets/
-
+RUN VCPKG_FORCE_SYSTEM_BINARIES=1 ./tmp/vcpkg/vcpkg update
 RUN VCPKG_FORCE_SYSTEM_BINARIES=1 ./tmp/vcpkg/vcpkg install boost-asio boost-filesystem boost-program-options boost-test fmt restinio
+
 
 COPY ./ /dockerized-restinio
 WORKDIR /dockerized-restinio
 ENV CTEST_OUTPUT_ON_FAILURE=1
 RUN mkdir build \
     && cd build \
-    && cmake .. -DCMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux-musl \
+    && cmake .. -DCMAKE_TOOLCHAIN_FILE=/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake \
     && make \
     && make test
 

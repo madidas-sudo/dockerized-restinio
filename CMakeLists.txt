@@ -17,14 +17,7 @@ set(TEST "test")
 add_executable(
   dockerized-restinio
 
-  ${SOURCE}/controller/readyness-controller.cpp
   ${SOURCE}/dockerized-restinio.cpp
-  ${SOURCE}/options.cpp
-
-  ${INCLUDE}/controller/controller-interface.h
-  ${INCLUDE}/controller/readyness-controller.h
-  ${INCLUDE}/dispatcher.h
-  ${INCLUDE}/options.h
 )
 
 find_package(Threads)
