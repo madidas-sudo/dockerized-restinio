@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <vector>
 
 #include <restinio/all.hpp>
 #include <json_dto/pub.hpp>
@@ -40,20 +39,6 @@ struct WeatherReg_t {
 		m_temp( temp ),
 		m_hum( hum )
 	{}
-
-    // Template for JSON DTO.
-    template < typename JSON_IO >
-	void
-	json_io( JSON_IO & io )
-    {
-		io
-        	& json_dto::mandatory( m_id, "id" )
-        	& json_dto::mandatory( m_date, "date" )
-        	& json_dto::mandatory( m_time, "time" )
-        	& json_dto::mandatory( m_place, "place" )
-        	& json_dto::mandatory( m_temp, "temp" )
-        	& json_dto::mandatory( m_hum, "hum" );
-    }
 
 	uint16_t m_id;
 	std::string m_date;
